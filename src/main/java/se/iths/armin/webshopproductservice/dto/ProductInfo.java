@@ -2,11 +2,10 @@ package se.iths.armin.webshopproductservice.dto;
 
 import java.math.BigDecimal;
 
-public record ProductResponseDto(
+public record ProductInfo(
         Long id,
         String name,
-        String description,
         BigDecimal price,
-        int stock
+        int quantity
 ) {
 }

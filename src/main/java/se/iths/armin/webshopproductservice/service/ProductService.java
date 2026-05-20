@@ -2,8 +2,14 @@ package se.iths.armin.webshopproductservice.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import se.iths.armin.webshopproductservice.dto.ProductInfo;
 import se.iths.armin.webshopproductservice.dto.ProductRequestDto;
 import se.iths.armin.webshopproductservice.dto.ProductResponseDto;
+import se.iths.armin.webshopproductservice.dto.ProductStockRequest;
+import se.iths.armin.webshopproductservice.exception.InsufficientStockException;
+import se.iths.armin.webshopproductservice.exception.ProductNotFoundException;
+import se.iths.armin.webshopproductservice.mapper.ProductMapper;
 import se.iths.armin.webshopproductservice.model.Product;
 import se.iths.armin.webshopproductservice.repository.ProductRepository;
 
@@ -14,56 +20,48 @@ import java.util.List;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final ProductMapper productMapper;
 
     public ProductResponseDto createProduct(ProductRequestDto dto) {
-        Product product = new Product();
-        product.setName(dto.name());
-        product.setDescription(dto.description());
-        product.setPrice(dto.price());
-        product.setStock(dto.stock());
-
-        Product saved = productRepository.save(product);
-
-        return new ProductResponseDto(
-                saved.getId(),
-                saved.getName(),
-                saved.getDescription(),
-                saved.getPrice(),
-                saved.getStock()
-        );
+        Product saved = productRepository.save(productMapper.toEntity(dto));
+        return productMapper.toDto(saved);
     }
 
     public List<ProductResponseDto> getAllProducts() {
         return productRepository.findAll()
                 .stream()
-                .map(product -> new ProductResponseDto(
-                        product.getId(),
-                        product.getName(),
-                        product.getDescription(),
-                        product.getPrice(),
-                        product.getStock()
-                ))
+                .map(productMapper::toDto)
                 .toList();
     }
 
     public ProductResponseDto getProductById(Long id) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
-
-        return new ProductResponseDto(
-                product.getId(),
-                product.getName(),
-                product.getDescription(),
-                product.getPrice(),
-                product.getStock()
-        );
+                .orElseThrow(() -> new ProductNotFoundException(id));
+        return productMapper.toDto(product);
     }
-    
+
     public void deleteProduct(Long id) {
         if (!productRepository.existsById(id)) {
-            throw new RuntimeException("Product not found");
+            throw new ProductNotFoundException(id);
         }
         productRepository.deleteById(id);
     }
+
+    @Transactional
+    public List<ProductInfo> decreaseStock(List<ProductStockRequest> items) {
+        return items.stream().map(item -> {
+            Product product = productRepository.findById(item.productId())
+                    .orElseThrow(() -> new ProductNotFoundException(item.productId()));
+
+            if (product.getStock() < item.quantity()) {
+                throw new InsufficientStockException(product.getName());
+            }
+
+            product.setStock(product.getStock() - item.quantity());
+
+            return productMapper.toProductInfo(product, item.quantity());
+        }).toList();
+    }
+
 
 }

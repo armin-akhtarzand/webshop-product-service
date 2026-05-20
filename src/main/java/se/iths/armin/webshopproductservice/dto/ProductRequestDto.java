@@ -5,6 +5,8 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 
+import java.math.BigDecimal;
+
 
 public record ProductRequestDto(
         @NotBlank(message = "Namn får inte vara tomt")
@@ -12,7 +14,7 @@ public record ProductRequestDto(
         String description,
 
         @Positive(message = "Pris måste vara större än 0")
-        double price,
+        BigDecimal price,
 
         @Min(value = 0, message = "Lager (stock) kan inte vara negativt")
         int stock
