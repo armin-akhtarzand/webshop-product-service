@@ -9,14 +9,14 @@ import java.math.BigDecimal;
 
 
 public record ProductRequestDto(
-        @NotBlank(message = "Namn får inte vara tomt")
+        @NotBlank(message = "Name cannot be empty")
         String name,
         String description,
 
-        @Positive(message = "Pris måste vara större än 0")
+        @Positive(message = "Price must be greater than 0")
         BigDecimal price,
 
-        @Min(value = 0, message = "Lager (stock) kan inte vara negativt")
+        @Min(value = 0, message = "Stock cannot be negative")
         int stock
 ) {
 }
