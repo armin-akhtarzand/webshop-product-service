@@ -13,6 +13,7 @@ import se.iths.armin.webshopproductservice.mapper.ProductMapper;
 import se.iths.armin.webshopproductservice.model.Product;
 import se.iths.armin.webshopproductservice.repository.ProductRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -49,7 +50,11 @@ public class ProductService {
 
     @Transactional
     public List<ProductInfo> decreaseStock(List<ProductStockRequest> items) {
-        return items.stream().map(item -> {
+
+        List<ProductInfo> updatedProducts = new ArrayList<>();
+
+        for (ProductStockRequest item : items) {
+
             Product product = productRepository.findById(item.productId())
                     .orElseThrow(() -> new ProductNotFoundException(item.productId()));
 
@@ -59,8 +64,11 @@ public class ProductService {
 
             product.setStock(product.getStock() - item.quantity());
 
-            return productMapper.toProductInfo(product, item.quantity());
-        }).toList();
+            ProductInfo info = productMapper.toProductInfo(product, item.quantity());
+            updatedProducts.add(info);
+        }
+
+        return updatedProducts;
     }
 
 
