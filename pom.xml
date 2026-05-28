@@ -10,7 +10,7 @@
     </parent>
     <groupId>se.iths.armin</groupId>
     <artifactId>webshop-product-service</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>webshop-product-service</name>
     <description>webshop-product-service</description>
     <url/>
