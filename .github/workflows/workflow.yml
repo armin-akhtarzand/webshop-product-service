@@ -26,7 +26,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build Docker image
-        run: docker build -t arminzand/webshop-mail-service:latest .
+        run: docker build -t arminzand/webshop-product-service:latest .
 
       - name: Push Docker image
-        run: docker push arminzand/webshop-mail-service:latest
+        run: docker push arminzand/webshop-product-service:latest
