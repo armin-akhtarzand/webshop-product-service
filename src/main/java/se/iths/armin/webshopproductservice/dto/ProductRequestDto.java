@@ -3,7 +3,9 @@ package se.iths.armin.webshopproductservice.dto;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import se.iths.armin.webshopproductservice.model.Category;
 
 import java.math.BigDecimal;
 
@@ -17,6 +19,12 @@ public record ProductRequestDto(
         BigDecimal price,
 
         @Min(value = 0, message = "Stock cannot be negative")
-        int stock
+        int stock,
+
+        @NotNull(message = "Category cannot be null")
+        Category category,
+
+        String imageUrl
+
 ) {
 }

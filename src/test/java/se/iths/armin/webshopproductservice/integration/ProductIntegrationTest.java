@@ -1,6 +1,5 @@
 package se.iths.armin.webshopproductservice.integration;
 
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import se.iths.armin.webshopproductservice.dto.ProductRequestDto;
 import se.iths.armin.webshopproductservice.dto.ProductStockRequest;
+import se.iths.armin.webshopproductservice.model.Category;
 import se.iths.armin.webshopproductservice.model.Product;
 import se.iths.armin.webshopproductservice.repository.ProductRepository;
 import tools.jackson.databind.ObjectMapper;
@@ -64,7 +64,9 @@ class ProductIntegrationTest {
                 "Samsung Galaxy",
                 "Smartphone",
                 BigDecimal.valueOf(13000),
-                5
+                5,
+                Category.TOPS,
+                "https://example.com/samsung.jpg"
         );
 
         mockMvc.perform(post("/products")
@@ -81,7 +83,9 @@ class ProductIntegrationTest {
                 "iPhone Air",
                 "Smartphone",
                 BigDecimal.valueOf(13000),
-                5
+                5,
+                Category.TOPS,
+                "https://example.com/samsung.jpg"
         );
 
         mockMvc.perform(post("/products")
@@ -98,7 +102,9 @@ class ProductIntegrationTest {
                 "Airpods Max",
                 "Headphones",
                 BigDecimal.valueOf(6000),
-                5
+                5,
+                Category.TOPS,
+                "https://example.com/airpods.jpg"
         );
 
         mockMvc.perform(post("/products")
