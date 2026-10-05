@@ -1,9 +1,6 @@
 package se.iths.armin.webshopproductservice.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -25,4 +22,8 @@ public class Product {
     private BigDecimal price;
     private int stock;
 
+    @Enumerated(EnumType.STRING)
+    private Category category;
+
+    private String imageUrl;
 }

@@ -16,6 +16,8 @@ public class ProductMapperImpl implements ProductMapper {
         product.setDescription(dto.description());
         product.setPrice(dto.price());
         product.setStock(dto.stock());
+        product.setCategory(dto.category());
+        product.setImageUrl(dto.imageUrl());
         return product;
     }
 
@@ -26,7 +28,9 @@ public class ProductMapperImpl implements ProductMapper {
                 product.getName(),
                 product.getDescription(),
                 product.getPrice(),
-                product.getStock()
+                product.getStock(),
+                product.getCategory(),
+                product.getImageUrl()
         );
     }
 
