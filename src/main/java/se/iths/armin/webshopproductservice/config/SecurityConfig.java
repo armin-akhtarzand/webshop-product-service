@@ -18,11 +18,20 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Konfigurerar säkerhet, JWT-autentisering och CORS.
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-
+    /**
+     * Konfigurerar säkerhetsregler för inkommande HTTP-anrop.
+     *
+     * @param http objekt för konfiguration av HTTP-säkerhet
+     * @return säkerhetsfilterkedjan
+     * @throws Exception om säkerhetskonfigurationen inte kan byggas
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -49,6 +58,11 @@ public class SecurityConfig {
     }
 
 
+    /**
+     * Konfigurerar hur roller från en JWT-token omvandlas till behörigheter.
+     *
+     * @return en konverterare för JWT-autentisering
+     */
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
 
@@ -69,6 +83,11 @@ public class SecurityConfig {
     }
 
 
+    /**
+     * Konfigurerar vilka ursprung, HTTP-metoder och headers som tillåts via CORS.
+     *
+     * @return Cors-konfigurationen för inkommande anrop
+     */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();

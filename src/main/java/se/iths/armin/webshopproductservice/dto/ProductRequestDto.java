@@ -9,7 +9,9 @@ import se.iths.armin.webshopproductservice.model.Category;
 
 import java.math.BigDecimal;
 
-
+/**
+ * Innehåller uppgifter för att skapa en produkt.
+ */
 public record ProductRequestDto(
         @NotBlank(message = "Name cannot be empty")
         String name,

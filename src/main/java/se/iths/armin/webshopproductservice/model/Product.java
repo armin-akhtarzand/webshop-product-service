@@ -5,6 +5,9 @@ import lombok.*;
 
 import java.math.BigDecimal;
 
+/**
+ * Representerar en produkt i systemet.
+ */
 @Entity
 @Getter
 @Setter

@@ -16,6 +16,10 @@ import se.iths.armin.webshopproductservice.repository.ProductRepository;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Hanterar produktlogik vid skapande, hämtning,
+ * borttagning och uppdatering av produkters lagersaldo.
+ */
 @Service
 @RequiredArgsConstructor
 public class ProductService {
@@ -23,11 +27,22 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
 
+    /**
+     * Skapar och sparar en ny produkt.
+     *
+     * @param dto uppgifter för produkten som skapas
+     * @return den skapande produkten som en respons DTO
+     */
     public ProductResponseDto createProduct(ProductRequestDto dto) {
         Product saved = productRepository.save(productMapper.toEntity(dto));
         return productMapper.toDto(saved);
     }
 
+    /**
+     * Hämtar alla produkter.
+     *
+     * @return en lista med produkter som respons DTO:er
+     */
     public List<ProductResponseDto> getAllProducts() {
         return productRepository.findAll()
                 .stream()
@@ -35,12 +50,25 @@ public class ProductService {
                 .toList();
     }
 
+    /**
+     * Hämtar en produkt med angivet ID.
+     *
+     * @param id produktens id
+     * @return produkten som en respons DTO
+     * @throws ProductNotFoundException om produkten inte finns
+     */
     public ProductResponseDto getProductById(Long id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException(id));
         return productMapper.toDto(product);
     }
 
+    /**
+     * Tar bort en produkt med angivet ID.
+     *
+     * @param id ID för produkten som ska tas bort
+     * @throws ProductNotFoundException om produkten inte finns
+     */
     public void deleteProduct(Long id) {
         if (!productRepository.existsById(id)) {
             throw new ProductNotFoundException(id);
@@ -48,6 +76,15 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
+    /**
+     * Minskar lagersaldot för de angivna produkterna.
+     * Uppdateringen av lagersaldot sker i en och samma transaktion.
+     *
+     * @param items produkter och antal som ska dras från lagret
+     * @return produkterna och antalet som dragits från lagret
+     * @throws ProductNotFoundException   om någon produkt inte finns
+     * @throws InsufficientStockException om någon produkt har otillräckligt lagersaldo
+     */
     @Transactional
     public List<ProductInfo> decreaseStock(List<ProductStockRequest> items) {
 

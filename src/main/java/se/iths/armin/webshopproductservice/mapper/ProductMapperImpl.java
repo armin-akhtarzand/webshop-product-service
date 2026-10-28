@@ -6,6 +6,9 @@ import se.iths.armin.webshopproductservice.dto.ProductRequestDto;
 import se.iths.armin.webshopproductservice.dto.ProductResponseDto;
 import se.iths.armin.webshopproductservice.model.Product;
 
+/**
+ * Implementerar mappning mellan produktentiteter och DTO:er.
+ */
 @Component
 public class ProductMapperImpl implements ProductMapper {
 
