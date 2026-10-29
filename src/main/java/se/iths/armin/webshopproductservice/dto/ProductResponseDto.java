@@ -4,6 +4,9 @@ import se.iths.armin.webshopproductservice.model.Category;
 
 import java.math.BigDecimal;
 
+/**
+ * Innehåller produktinformation som returneras från API:et.
+ */
 public record ProductResponseDto(
         Long id,
         String name,
